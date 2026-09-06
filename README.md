@@ -10,7 +10,7 @@ The main purpose of this project is to understand how these algorithms work by i
 * SJF (Shortest Job First)
 * SRTF (Shortest Remaining Time First)
 * Priority Scheduling (non-preemptive)
-* Round Robin
+* Round Robin (preemptive)
 
 ## Disk Scheduling
 
