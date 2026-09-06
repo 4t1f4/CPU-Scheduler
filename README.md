@@ -1,32 +1,53 @@
-# CPU Scheduler Simulator
+# OS Algorithm Simulator
 
-A simple CPU Scheduler Simulator that I’m building to practice **DSA concepts** and learn **Operating System scheduling algorithms** side by side.
+A simple project I'm building to practice **DSA concepts** while learning and implementing **Operating System algorithms** side by side.
 
-This is mainly a learning and practice project where I’m implementing different CPU scheduling algorithms while understanding how they work.
+The main purpose of this project is to understand how these algorithms work by implementing them myself and experimenting with different inputs.
 
-## Algorithms
+## CPU Scheduling
 
 * FCFS (First Come First Serve)
 * SJF (Shortest Job First)
 * SRTF (Shortest Remaining Time First)
 * Priority Scheduling
 * Round Robin
-* Multilevel Queue
-* Multilevel Feedback Queue
 
-## DSA Concepts
+## Disk Scheduling
 
-While building this project, I’m also trying to implement and understand concepts like:
+* FCFS (First Come First Serve)
+* SSTF (Shortest Seek Time First)
+* SCAN (Elevator Algorithm)
+* C-SCAN (Circular SCAN)
+
+## Page Replacement / Page Fault
+
+* FIFO (First In First Out)
+* Optimal Page Replacement
+* LRU (Least Recently Used)
+
+## Deadlock
+
+* Banker's Algorithm
+* Resource Allocation Graph (RAG)
+
+## DSA Concepts I'm Practicing
+
+While implementing these algorithms, I'm also trying to understand and practice:
 
 * Queues
 * Priority Queues
 * Sorting
 * Searching
 * Heaps
+* Arrays / Lists
+* Graphs
+* Resource allocation
 * Process scheduling
 
 ## Goal
 
-The main goal is not to build a perfect scheduler, but to **learn, implement, experiment, and understand DSA and OS concepts together**.
+This is mainly a **learning and practice project**.
 
-More features and improvements will be added as I learn.
+I'm implementing these OS algorithms while learning the concepts and trying to understand how DSA can be applied to Operating Systems.
+
+The project will be improved gradually as I learn more.
