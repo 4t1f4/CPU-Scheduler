@@ -16,8 +16,8 @@ The main purpose of this project is to understand how these algorithms work by i
 
 * FCFS (First Come First Serve)
 * SSTF (Shortest Seek Time First)
-* SCAN (Elevator Algorithm)
-* C-SCAN (Circular SCAN)
+* SCAN (Elevator Algorithm) (Both - Standard & my Prof's Version)
+* C-SCAN (Circular SCAN) (Both - Standard & my Prof's Version)
 
 ## Page Replacement / Page Fault
 
