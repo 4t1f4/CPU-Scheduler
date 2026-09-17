@@ -8,5 +8,11 @@ class Process(BaseModel):
     priority: int
 
 
-class FCFSRequest(BaseModel):
+class CPURequest(BaseModel):
     processes: list[Process]
+
+
+
+class RoundRobinRequest(BaseModel):
+    processes: list[Process]
+    quantum: int
