@@ -4,7 +4,9 @@ from algorithms.fcfs import fcfs
 from algorithms.sjf import sjf
 from schemas.process import FCFSRequest
 
-router = APIRouter()
+router = APIRouter(
+    tags=["CPU Scheduling"]
+)
 
 
 #this fcfs ka endpoint
