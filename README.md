@@ -1,53 +1,109 @@
 # OS Algorithm Simulator
 
-A simple project I'm building to practice **DSA concepts** while learning and implementing **Operating System algorithms** side by side.
+A learning-focused project where I'm implementing **Operating System algorithms** while practicing **DSA concepts** alongside them.
 
-The main purpose of this project is to understand how these algorithms work by implementing them myself and experimenting with different inputs.
+The main goal is to understand how these algorithms work by implementing them myself, testing different inputs, and connecting the algorithms to a backend API.
 
-## CPU Scheduling
+## 🛠️ Technologies & Languages
+
+* **Python** — Algorithm implementation and backend development
+* **FastAPI** — Building the backend API
+* **Pydantic** — Request data validation
+* **Uvicorn** — Running the FastAPI application
+* **Git & GitHub** — Version control and project management
+* **Swagger / OpenAPI** — Testing and documenting the API
+
+## ⚙️ CPU Scheduling
 
 * FCFS (First Come First Serve)
 * SJF (Shortest Job First)
 * SRTF (Shortest Remaining Time First)
-* Priority Scheduling (non-preemptive)
-* Round Robin (preemptive)
+* Priority Scheduling (Non-Preemptive)
+* Round Robin (Preemptive)
 
-## Disk Scheduling
+## 💿 Disk Scheduling
 
 * FCFS (First Come First Serve)
 * SSTF (Shortest Seek Time First)
-* SCAN (Elevator Algorithm) (Both - Standard & my Prof's Version)
-* C-SCAN (Circular SCAN) (Both - Standard & my Prof's Version)
+* SCAN (Elevator Algorithm) — Standard & Professor's Version
+* C-SCAN (Circular SCAN) — Standard & Professor's Version
 
-## Page Replacement / Page Fault
+## 🧠 Page Replacement
 
 * FIFO (First In First Out)
 * Optimal Page Replacement
 * LRU (Least Recently Used)
 
-## Deadlock
+## 🔒 Deadlock
 
 * Banker's Algorithm
 * Resource Allocation Graph (RAG)
 
-## DSA Concepts I'm Practicing
+## 🧩 DSA Concepts I'm Practicing
 
-While implementing these algorithms, I'm also trying to understand and practice:
+While implementing these algorithms, I'm also practicing:
 
+* Arrays / Lists
 * Queues
 * Priority Queues
 * Sorting
 * Searching
 * Heaps
-* Arrays / Lists
 * Graphs
-* Resource allocation
-* Process scheduling
+* Resource Allocation
+* Process Scheduling
 
-## Goal
+## 🚀 Backend API
+
+The algorithms are being connected to a **FastAPI backend** so they can be tested through API requests.
+
+Current API sections:
+
+```text
+/api/cpu
+/api/disk
+```
+
+FastAPI automatically provides interactive API documentation through **Swagger UI**, making it easier to test different inputs while developing the simulator.
+
+## 📌 Project Status
+
+### Completed
+
+* CPU scheduling algorithms implemented
+* CPU scheduling API endpoints
+* Pydantic request validation
+* Disk FCFS API
+* Disk SSTF API
+* Standard & professor-specific SCAN/C-SCAN logic
+* Page replacement algorithms
+* Deadlock algorithms
+* Git/GitHub version control
+
+### In Progress
+
+* Connecting remaining disk algorithms to the API
+* Expanding API structure for page replacement and deadlock algorithms
+
+## 🔮 Future Improvements
+
+As I learn more, I plan to gradually add:
+
+* Interactive frontend for running algorithms
+* Gantt chart visualization for CPU scheduling
+* Disk head movement visualization
+* Page replacement frame visualization
+* Step-by-step algorithm execution
+* More detailed performance metrics
+* Better API structure and documentation
+* Database integration for saving simulations
+* User-friendly input forms
+* Dockerization and deployment
+
+## 🎯 Goal
 
 This is mainly a **learning and practice project**.
 
-I'm implementing these OS algorithms while learning the concepts and trying to understand how DSA can be applied to Operating Systems.
+I'm building it step by step while learning Operating Systems, DSA, backend development, and API design.
 
-The project will be improved gradually as I learn more.
+The project will continue to evolve as I learn and implement more concepts.
