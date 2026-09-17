@@ -12,7 +12,6 @@ class CPURequest(BaseModel):
     processes: list[Process]
 
 
-
 class RoundRobinRequest(BaseModel):
     processes: list[Process]
     quantum: int

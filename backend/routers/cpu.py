@@ -6,7 +6,7 @@ from algorithms.srtf import srtf
 from algorithms.priority import priority_scheduling
 from algorithms.round_robin import round_robin
 
-from schemas.process import FCFSRequest, RoundRobinRequest
+from schemas.process import CPURequest, RoundRobinRequest
 
 router = APIRouter(
     tags=["CPU Scheduling"]
@@ -15,7 +15,7 @@ router = APIRouter(
 
 #this fcfs ka endpoint
 @router.post("/fcfs")
-def run_fcfs(data: FCFSRequest):
+def run_fcfs(data: CPURequest):
 
     # convert Pydantic objects into dictionaries
     processes = [process.model_dump() for process in data.processes]
@@ -28,7 +28,7 @@ def run_fcfs(data: FCFSRequest):
 
 #this sjf ka endpoint
 @router.post("/sjf")
-def run_sjf(data: FCFSRequest):
+def run_sjf(data: CPURequest):
 
     # convert Pydantic objects into dictionaries
     processes = [process.model_dump() for process in data.processes]
@@ -41,7 +41,7 @@ def run_sjf(data: FCFSRequest):
 
 #this srtf ka endpoint
 @router.post("/srtf")
-def run_srtf(data: FCFSRequest):
+def run_srtf(data: CPURequest):
 
     # convert Pydantic objects into dictionaries
     processes = [process.model_dump() for process in data.processes]
@@ -54,7 +54,7 @@ def run_srtf(data: FCFSRequest):
 
 #this priority ka endpoint
 @router.post("/priority")
-def run_priority(data: FCFSRequest):
+def run_priority(data: CPURequest):
 
     # convert Pydantic objects into dictionaries
     processes = [process.model_dump() for process in data.processes]
