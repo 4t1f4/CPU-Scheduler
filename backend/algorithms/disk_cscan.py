@@ -1,29 +1,34 @@
-def cscan(requests, head, disk_size, direction="right",
-          count_zero=True, professor_version=False,
-          time_per_track=1):
+def cscan(
+    requests,
+    head,
+    disk_size,
+    direction="right",
+    count_zero=True,
+    professor_version=False,
+    time_per_track=1
+):
     """
-    c-scan (circular scan)
+    C-SCAN (Circular SCAN)
 
-    two versions:
+    Standard version:
+    The head moves to the disk boundary, jumps to the other
+    end and continues servicing requests in the same direction.
+    The circular jump is not counted in total movement.
 
-    1. professor_version = False
-       standard c-scan
-       head moves to the disk end
-       circular jump is not counted
-
-    2. professor_version = True
-       professor's version
-       after finishing one side, directly calculate
-       distance to the first request on the other side
+    Professor's version:
+    The head directly calculates the distance between
+    the last request on one side and the first request
+    on the other side.
     """
 
+    # Make a copy so the original request list remains unchanged
     requests = requests.copy()
 
     current_head = head
     total_movement = 0
     sequence = [head]
 
-    # decide disk boundaries
+    # Set the first and last track of the disk
     if count_zero:
         left_end = 0
         right_end = disk_size - 1
@@ -31,7 +36,7 @@ def cscan(requests, head, disk_size, direction="right",
         left_end = 1
         right_end = disk_size
 
-    # separate requests
+    # Separate requests on the left and right of the head
     left_requests = sorted(
         [request for request in requests if request < head]
     )
@@ -40,15 +45,12 @@ def cscan(requests, head, disk_size, direction="right",
         [request for request in requests if request >= head]
     )
 
-    # =================================================
-    # PROFESSOR'S VERSION
-    # =================================================
-
+    # Professor's version
     if professor_version:
 
         if direction == "right":
 
-            # service right requests in ascending order
+            # Service right requests in ascending order
             for request in right_requests:
 
                 movement = abs(current_head - request)
@@ -56,41 +58,33 @@ def cscan(requests, head, disk_size, direction="right",
                 total_movement += movement
 
                 current_head = request
-
                 sequence.append(request)
 
-            # directly move to first left request
-            # circular jump is not calculated separately
+            # Directly move to the first left request
             if left_requests:
 
                 first_left = left_requests[0]
 
-                movement = abs(
-                    current_head - first_left
-                )
+                movement = abs(current_head - first_left)
 
                 total_movement += movement
 
                 current_head = first_left
-
                 sequence.append(first_left)
 
-                # service remaining left requests
+                # Service the remaining left requests
                 for request in left_requests[1:]:
 
-                    movement = abs(
-                        current_head - request
-                    )
+                    movement = abs(current_head - request)
 
                     total_movement += movement
 
                     current_head = request
-
                     sequence.append(request)
 
         else:
 
-            # service left requests in descending order
+            # Service left requests in descending order
             left_descending = sorted(
                 left_requests,
                 reverse=True
@@ -98,145 +92,113 @@ def cscan(requests, head, disk_size, direction="right",
 
             for request in left_descending:
 
-                movement = abs(
-                    current_head - request
-                )
+                movement = abs(current_head - request)
 
                 total_movement += movement
 
                 current_head = request
-
                 sequence.append(request)
 
-            # directly move to last right request
+            # Directly move to the last right request
             if right_requests:
 
                 first_right = right_requests[-1]
 
-                movement = abs(
-                    current_head - first_right
-                )
+                movement = abs(current_head - first_right)
 
                 total_movement += movement
 
                 current_head = first_right
-
                 sequence.append(first_right)
 
-                # service remaining right requests
-                for request in reversed(
-                    right_requests[:-1]
-                ):
+                # Service the remaining right requests
+                for request in reversed(right_requests[:-1]):
 
-                    movement = abs(
-                        current_head - request
-                    )
+                    movement = abs(current_head - request)
 
                     total_movement += movement
 
                     current_head = request
-
                     sequence.append(request)
 
-    # =================================================
-    # STANDARD C-SCAN
-    # =================================================
-
+    # Standard C-SCAN
     else:
 
         if direction == "right":
 
-            # service right requests
+            # Service right requests in ascending order
             for request in right_requests:
 
-                movement = abs(
-                    current_head - request
-                )
+                movement = abs(current_head - request)
 
                 total_movement += movement
 
                 current_head = request
-
                 sequence.append(request)
 
-            # move to right end
+            # Move to the right boundary
             if current_head != right_end:
 
-                movement = abs(
-                    current_head - right_end
-                )
+                movement = abs(current_head - right_end)
 
                 total_movement += movement
 
                 current_head = right_end
-
                 sequence.append(right_end)
 
-            # circular jump to left end
-            # NOT counted
+            # Jump to the left boundary
+            # This circular jump is not included in total movement
             current_head = left_end
             sequence.append(left_end)
 
-            # service left requests in ascending order
+            # Continue servicing left requests in ascending order
             for request in left_requests:
 
-                movement = abs(
-                    current_head - request
-                )
+                movement = abs(current_head - request)
 
                 total_movement += movement
 
                 current_head = request
-
                 sequence.append(request)
 
         else:
 
-            # service left requests in descending order
+            # Service left requests in descending order
             for request in reversed(left_requests):
 
-                movement = abs(
-                    current_head - request
-                )
+                movement = abs(current_head - request)
 
                 total_movement += movement
 
                 current_head = request
-
                 sequence.append(request)
 
-            # move to left end
+            # Move to the left boundary
             if current_head != left_end:
 
-                movement = abs(
-                    current_head - left_end
-                )
+                movement = abs(current_head - left_end)
 
                 total_movement += movement
 
                 current_head = left_end
-
                 sequence.append(left_end)
 
-            # circular jump to right end
-            # NOT counted
+            # Jump to the right boundary
+            # This circular jump is not included in total movement
             current_head = right_end
             sequence.append(right_end)
 
-            # service right requests in descending order
+            # Continue servicing right requests in descending order
             for request in reversed(right_requests):
 
-                movement = abs(
-                    current_head - request
-                )
+                movement = abs(current_head - request)
 
                 total_movement += movement
 
                 current_head = request
-
                 sequence.append(request)
 
-    # calculate time
+    # Calculate total time using the time required per track
     total_time = total_movement * time_per_track
 
     return {
@@ -244,140 +206,3 @@ def cscan(requests, head, disk_size, direction="right",
         "total_movement": total_movement,
         "total_time": total_time
     }
-
-
-if __name__ == "__main__":
-
-    requests = [98, 183, 37, 122, 14, 124, 65, 67]
-
-    head = 53
-
-    disk_size = 200
-
-    direction = "right"
-
-    time_per_track = 1
-
-    # =================================================
-    # VERSION 1: STANDARD C-SCAN
-    # =================================================
-
-    print("\nSTANDARD C-SCAN")
-    print("-" * 40)
-
-    result_standard = cscan(
-        requests,
-        head,
-        disk_size,
-        direction,
-        True,
-        False,
-        time_per_track
-    )
-
-    print("Disk Tracks: 0 - 199")
-    print("Initial Head:", head)
-    print("Direction:", direction)
-
-    print("\nSequence:")
-
-    print(
-        " -> ".join(
-            map(str, result_standard["sequence"])
-        )
-    )
-
-    print(
-        "\nTotal Movement:",
-        result_standard["total_movement"]
-    )
-
-    print(
-        "Total Time:",
-        result_standard["total_time"]
-    )
-
-    # =================================================
-    # VERSION 2: PROFESSOR'S C-SCAN
-    # =================================================
-
-    print("\n\nPROFESSOR'S C-SCAN")
-    print("-" * 40)
-
-    result_professor = cscan(
-        requests,
-        head,
-        disk_size,
-        direction,
-        True,
-        True,
-        time_per_track
-    )
-
-    print("Disk Tracks: 0 - 199")
-    print("Initial Head:", head)
-    print("Direction:", direction)
-
-    print("\nSequence:")
-
-    print(
-        " -> ".join(
-            map(str, result_professor["sequence"])
-        )
-    )
-
-    print(
-        "\nTotal Movement:",
-        result_professor["total_movement"]
-    )
-
-    print(
-        "Total Time:",
-        result_professor["total_time"]
-    )
-
-
-"""
-c-scan (circular scan)
-
-standard version:
-
-- service requests in one direction
-- move to the disk boundary
-- circular jump to the other boundary
-- circular jump is not counted
-- continue servicing requests in the same direction
-
-professor's version:
-
-- service requests in one direction
-- do not separately calculate movement to 199/0
-- do not calculate circular jump
-- directly calculate distance between the
-  last request on one side and the first
-  request on the other side
-
-right direction:
-
-right requests -> ascending
-then first left request
-then remaining left requests -> ascending
-
-left direction:
-
-left requests -> descending
-then last right request
-then remaining right requests -> descending
-
-movement:
-
-movement = abs(current head - next request)
-
-total movement:
-
-total_movement = sum of all movements
-
-time:
-
-total_time = total_movement * time_per_track
-"""
