@@ -2,108 +2,127 @@
 
 A learning-focused project where I'm implementing **Operating System algorithms** while practicing **DSA concepts** alongside them.
 
-The main goal is to understand how these algorithms work by implementing them myself, testing different inputs, and connecting the algorithms to a backend API.
+The main goal is to understand how these algorithms work by implementing them myself, testing different inputs, and connecting them to a backend API.
 
-## 🛠️ Technologies & Languages
+## Technologies & Languages
 
-* **Python** — Algorithm implementation and backend development
-* **FastAPI** — Building the backend API
-* **Pydantic** — Request data validation
-* **Uvicorn** — Running the FastAPI application
-* **Git & GitHub** — Version control and project management
-* **Swagger / OpenAPI** — Testing and documenting the API
+- **Python** — Algorithm implementation and backend development
+- **FastAPI** — Building the backend API
+- **Pydantic** — Request data validation
+- **Uvicorn** — Running the FastAPI application
+- **Git & GitHub** — Version control and project management
+- **Swagger / OpenAPI** — Testing and documenting API endpoints
 
-## ⚙️ CPU Scheduling
+## CPU Scheduling
 
-* FCFS (First Come First Serve)
-* SJF (Shortest Job First)
-* SRTF (Shortest Remaining Time First)
-* Priority Scheduling (Non-Preemptive)
-* Round Robin (Preemptive)
+- FCFS (First Come First Serve)
+- SJF (Shortest Job First)
+- SRTF (Shortest Remaining Time First)
+- Priority Scheduling (Non-Preemptive)
+- Round Robin (Preemptive)
 
-## 💿 Disk Scheduling
+## Disk Scheduling
 
-* FCFS (First Come First Serve)
-* SSTF (Shortest Seek Time First)
-* SCAN (Elevator Algorithm) — Standard & Professor's Version
-* C-SCAN (Circular SCAN) — Standard & Professor's Version
+- FCFS (First Come First Serve)
+- SSTF (Shortest Seek Time First)
+- SCAN (Elevator Algorithm) — Standard & Professor's Version
+- C-SCAN (Circular SCAN) — Standard & Professor's Version
 
-## 🧠 Page Replacement
+## Page Replacement
 
-* FIFO (First In First Out)
-* Optimal Page Replacement
-* LRU (Least Recently Used)
+- FIFO (First In First Out)
+- Optimal Page Replacement
+- LRU (Least Recently Used)
 
-## 🔒 Deadlock
+## Deadlock
 
-* Banker's Algorithm
-* Resource Allocation Graph (RAG)
+- Banker's Algorithm
+- Resource Allocation Graph (RAG) — Matrix-based deadlock detection
 
-## 🧩 DSA Concepts I'm Practicing
+## DSA Concepts I'm Practicing
 
 While implementing these algorithms, I'm also practicing:
 
-* Arrays / Lists
-* Queues
-* Priority Queues
-* Sorting
-* Searching
-* Heaps
-* Graphs
-* Resource Allocation
-* Process Scheduling
+- Arrays / Lists
+- Queues
+- Priority Queues
+- Sorting
+- Searching
+- Heaps
+- Graphs
+- Resource Allocation
+- Process Scheduling
 
-## 🚀 Backend API
+## Backend API
 
-The algorithms are being connected to a **FastAPI backend** so they can be tested through API requests.
+All the implemented algorithms are now connected to a **FastAPI backend**.
 
-Current API sections:
+The API is divided into four sections:
 
 ```text
 /api/cpu
 /api/disk
+/api/page-replacement
+/api/deadlock
 ```
 
-FastAPI automatically provides interactive API documentation through **Swagger UI**, making it easier to test different inputs while developing the simulator.
+FastAPI automatically provides interactive API documentation through **Swagger UI**, where I can test different inputs and check the algorithm outputs.
 
-## 📌 Project Status
+To run the backend locally:
+
+```bash
+cd backend
+.\venv\Scripts\activate
+uvicorn main:app --reload
+```
+
+Open the following URL to access the API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+## Project Status
 
 ### Completed
 
-* CPU scheduling algorithms implemented
-* CPU scheduling API endpoints
-* Pydantic request validation
-* Disk FCFS API
-* Disk SSTF API
-* Standard & professor-specific SCAN/C-SCAN logic
-* Page replacement algorithms
-* Deadlock algorithms
-* Git/GitHub version control
+- Implemented all CPU scheduling algorithms
+- Connected CPU scheduling algorithms to API endpoints
+- Implemented Pydantic request validation
+- Implemented disk scheduling algorithms
+- Added standard and professor-specific SCAN and C-SCAN logic
+- Connected disk scheduling algorithms to API endpoints
+- Implemented FIFO, Optimal and LRU page replacement
+- Connected page replacement algorithms to API endpoints
+- Implemented Banker's Algorithm
+- Implemented matrix-based deadlock detection
+- Connected deadlock algorithms to API endpoints
+- Tested API endpoints using Swagger UI
 
-### In Progress
+### Next Steps
 
-* Connecting remaining disk algorithms to the API
-* Expanding API structure for page replacement and deadlock algorithms
+- Build an interactive frontend
+- Connect the frontend to the FastAPI backend
+- Add Gantt chart visualization for CPU scheduling
+- Add disk head movement visualization
+- Visualize page replacement using frames
+- Show deadlock detection and safe sequences
+- Add step-by-step algorithm execution
+- Display performance metrics and comparisons
 
-## 🔮 Future Improvements
+## Future Improvements
 
-As I learn more, I plan to gradually add:
+As I continue learning, I would also like to explore:
 
-* Interactive frontend for running algorithms
-* Gantt chart visualization for CPU scheduling
-* Disk head movement visualization
-* Page replacement frame visualization
-* Step-by-step algorithm execution
-* More detailed performance metrics
-* Better API structure and documentation
-* Database integration for saving simulations
-* User-friendly input forms
-* Dockerization and deployment
+- Better input forms and validation
+- Database integration for saving simulations
+- Dockerization
+- Deployment
 
-## 🎯 Goal
+## Goal
 
-This is mainly a **learning and practice project**.
+This is mainly a learning and practice project.
 
 I'm building it step by step while learning Operating Systems, DSA, backend development, and API design.
 
-The project will continue to evolve as I learn and implement more concepts.
+There's still a lot I want to explore and improve, especially when it comes to visualizing how these algorithms actually work.
