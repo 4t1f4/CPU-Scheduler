@@ -1,14 +1,9 @@
 def check_deadlock(total_resources, allocation, requests):
-
     """
-    Deadlock Detection Algorithm
+    Deadlock Detection Algorithm.
 
     Checks whether processes can complete
-    using currently available resources.
-
-    total_resources = total instances of each resource
-    allocation = resources currently allocated to processes
-    requests = resources currently requested by processes
+    using the currently available resources.
     """
 
     process_count = len(allocation)
@@ -23,7 +18,7 @@ def check_deadlock(total_resources, allocation, requests):
 
             allocated[j] += allocation[i][j]
 
-    # calculate available resources
+    # calculate currently available resources
     available = []
 
     for j in range(resource_count):
@@ -34,13 +29,12 @@ def check_deadlock(total_resources, allocation, requests):
 
     initial_available = available.copy()
 
-    # initially no process is finished
+    # track which processes have completed
     finish = [False] * process_count
 
-    # stores processes that can complete
     safe_sequence = []
 
-    # check whether any process can complete
+    # check whether processes can complete
     while True:
 
         found = False
@@ -50,9 +44,9 @@ def check_deadlock(total_resources, allocation, requests):
             if finish[i]:
                 continue
 
+            # check whether Request <= Available
             can_finish = True
 
-            # check Request <= Available
             for j in range(resource_count):
 
                 if requests[i][j] > available[j]:
@@ -60,25 +54,23 @@ def check_deadlock(total_resources, allocation, requests):
                     can_finish = False
                     break
 
-            # process can complete
             if can_finish:
 
                 finish[i] = True
-
                 safe_sequence.append(i)
 
-                # release allocated resources
+                # release resources after process completes
                 for j in range(resource_count):
 
                     available[j] += allocation[i][j]
 
                 found = True
 
-        # stop if no process can complete
+        # stop if no more processes can complete
         if not found:
             break
 
-    # identify unfinished processes
+    # identify processes that could not complete
     stuck = []
 
     for i in range(process_count):
@@ -87,7 +79,7 @@ def check_deadlock(total_resources, allocation, requests):
 
             stuck.append(i)
 
-    # check whether deadlock exists
+    # deadlock exists if some processes remain unfinished
     deadlock = len(safe_sequence) != process_count
 
     return {
