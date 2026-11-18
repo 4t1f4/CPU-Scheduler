@@ -3,8 +3,9 @@ from fastapi import APIRouter
 from algorithms.disk_fcfs import disk_fcfs
 from algorithms.disk_sstf import sstf
 from algorithms.disk_scan import scan
+from algorithms.disk_cscan import cscan
 
-from schemas.disk import DiskRequest, ScanRequest
+from schemas.disk import DiskRequest, ScanRequest, CScanRequest
 
 
 router = APIRouter(
@@ -38,4 +39,20 @@ def run_scan(data: ScanRequest):
         data.time_per_track
     )
 
+    return result
+
+
+
+
+@router.post("/cscan")
+def run_cscan(data: CScanRequest):
+    result = cscan(
+        data.requests,
+        data.head,
+        data.disk_size,
+        data.direction,
+        data.count_zero,
+        data.professor_version,
+        data.time_per_track
+    )
     return result

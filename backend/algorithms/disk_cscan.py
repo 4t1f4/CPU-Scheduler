@@ -1,5 +1,6 @@
 def cscan(requests, head, disk_size, direction="right",
-          count_zero=True, professor_version=False):
+          count_zero=True, professor_version=False,
+          time_per_track=1):
     """
     c-scan (circular scan)
 
@@ -235,15 +236,19 @@ def cscan(requests, head, disk_size, direction="right",
 
                 sequence.append(request)
 
+    # calculate time
+    total_time = total_movement * time_per_track
+
     return {
         "sequence": sequence,
-        "total_movement": total_movement
+        "total_movement": total_movement,
+        "total_time": total_time
     }
 
 
 if __name__ == "__main__":
 
-    requests = [ 98, 183, 37, 122, 14, 124, 65, 67 ]
+    requests = [98, 183, 37, 122, 14, 124, 65, 67]
 
     head = 53
 
@@ -251,6 +256,7 @@ if __name__ == "__main__":
 
     direction = "right"
 
+    time_per_track = 1
 
     # =================================================
     # VERSION 1: STANDARD C-SCAN
@@ -265,7 +271,8 @@ if __name__ == "__main__":
         disk_size,
         direction,
         True,
-        False
+        False,
+        time_per_track
     )
 
     print("Disk Tracks: 0 - 199")
@@ -285,6 +292,10 @@ if __name__ == "__main__":
         result_standard["total_movement"]
     )
 
+    print(
+        "Total Time:",
+        result_standard["total_time"]
+    )
 
     # =================================================
     # VERSION 2: PROFESSOR'S C-SCAN
@@ -299,7 +310,8 @@ if __name__ == "__main__":
         disk_size,
         direction,
         True,
-        True
+        True,
+        time_per_track
     )
 
     print("Disk Tracks: 0 - 199")
@@ -317,6 +329,11 @@ if __name__ == "__main__":
     print(
         "\nTotal Movement:",
         result_professor["total_movement"]
+    )
+
+    print(
+        "Total Time:",
+        result_professor["total_time"]
     )
 
 
@@ -355,4 +372,12 @@ then remaining right requests -> descending
 movement:
 
 movement = abs(current head - next request)
+
+total movement:
+
+total_movement = sum of all movements
+
+time:
+
+total_time = total_movement * time_per_track
 """
