@@ -1,33 +1,33 @@
 def sjf(processes):
     """
-    shortest job first cpu scheduling
+    Shortest Job First CPU Scheduling
 
-    each process has:
-    - id
-    - arrival
-    - burst
-    - priority
+    The process with the shortest burst time gets the CPU first.
+    This is a non-preemptive scheduling algorithm.
     """
 
-    # make a copy so the original process list is not changed
+    # Make a copy so the original process list remains unchanged
     processes = processes.copy()
 
     current_time = 0
     timeline = []
     results = []
 
-    # keep running until all processes are completed
+    # Continue until all processes are completed
     while processes:
 
-        # find processes that have already arrived
+        # Find processes that have already arrived
         available = [
             process for process in processes
             if process["arrival"] <= current_time
         ]
 
-        # if no process has arrived yet, move cpu time forward
+        # If no process is ready, move to the next arrival time
         if not available:
-            next_arrival = min(process["arrival"] for process in processes)
+
+            next_arrival = min(
+                process["arrival"] for process in processes
+            )
 
             timeline.append({
                 "process": "IDLE",
@@ -38,7 +38,8 @@ def sjf(processes):
             current_time = next_arrival
             continue
 
-        # choose the process with the shortest burst time
+        # Select the process with the shortest burst time
+        # Arrival time is used to break ties
         process = min(
             available,
             key=lambda p: (p["burst"], p["arrival"])
@@ -48,23 +49,23 @@ def sjf(processes):
         arrival = process["arrival"]
         burst = process["burst"]
 
-        # find when the process starts and finishes
+        # Calculate process start and completion times
         start_time = current_time
         completion_time = start_time + burst
 
-        # calculate the scheduling times
+        # Calculate scheduling times
         waiting_time = start_time - arrival
         turnaround_time = completion_time - arrival
         response_time = start_time - arrival
 
-        # save this part for the gantt chart
+        # Add the process to the Gantt chart timeline
         timeline.append({
             "process": pid,
             "start": start_time,
             "end": completion_time
         })
 
-        # save all results for this process
+        # Store the completed process details
         results.append({
             "id": pid,
             "arrival": arrival,
@@ -77,16 +78,15 @@ def sjf(processes):
             "response": response_time
         })
 
-        # move the cpu time to when this process finishes
+        # Update CPU time and remove the completed process
         current_time = completion_time
-
-        # remove the completed process
         processes.remove(process)
 
-    # calculate average times
+    # Calculate average scheduling times
     number_of_processes = len(results)
 
     if number_of_processes > 0:
+
         average_waiting = sum(
             p["waiting"] for p in results
         ) / number_of_processes
@@ -98,6 +98,7 @@ def sjf(processes):
         average_response = sum(
             p["response"] for p in results
         ) / number_of_processes
+
     else:
         average_waiting = 0
         average_turnaround = 0
@@ -112,91 +113,3 @@ def sjf(processes):
             "response": average_response
         }
     }
-
-
-if __name__ == "__main__":
-
-    processes = [
-        {
-            "id": "P1",
-            "arrival": 1,
-            "burst": 3,
-            "priority": 4
-        },
-        {
-            "id": "P2",
-            "arrival": 2,
-            "burst": 4,
-            "priority": 3
-        },
-        {
-            "id": "P3",
-            "arrival": 1,
-            "burst": 2,
-            "priority": 1
-        },
-        {
-            "id": "P4",
-            "arrival": 4,
-            "burst": 4,
-            "priority": 2
-        }
-    ]
-
-    result = sjf(processes)
-
-    print("\nGANTT CHART")
-    print("-" * 40)
-
-    for block in result["timeline"]:
-        print(
-            f"{block['process']}: "
-            f"{block['start']} -> {block['end']}"
-        )
-
-    print("\nPROCESS RESULTS")
-    print("-" * 40)
-
-    for process in result["results"]:
-        print(
-            f"{process['id']} | "
-            f"Waiting: {process['waiting']} | "
-            f"Turnaround: {process['turnaround']} | "
-            f"Response: {process['response']}"
-        )
-
-    print("\nAVERAGES")
-    print("-" * 40)
-
-    print(
-        f"Average Waiting Time: "
-        f"{result['averages']['waiting']:.2f}"
-    )
-
-    print(
-        f"Average Turnaround Time: "
-        f"{result['averages']['turnaround']:.2f}"
-    )
-
-    print(
-        f"Average Response Time: "
-        f"{result['averages']['response']:.2f}"
-    )
-
-
-"""
-sjf (shortest job first)
-
-- the process with the shortest burst time gets the cpu first
-- only processes that have already arrived can be selected
-- once a process starts, it runs until it finishes
-- no preemption means the process is not interrupted
-- priority does not decide the order
-- if no process has arrived, the cpu stays idle
-- if two processes have the same burst time, arrival time is used
-
-time calculations:
-waiting time = start time - arrival time
-turnaround time = completion time - arrival time
-response time = first start time - arrival time
-"""

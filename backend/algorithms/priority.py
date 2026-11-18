@@ -1,21 +1,17 @@
 def priority_scheduling(processes):
     """
-    priority scheduling cpu scheduling
+    Priority CPU Scheduling
 
-    each process has:
-    - id
-    - priority
-    - burst
-
-    smaller priority number means higher priority
-    arrival time is considered 0 for all processes
+    Smaller priority number means higher priority.
+    All processes are considered to have arrival time 0.
+    This is a non-preemptive scheduling algorithm.
     """
 
-    # make a copy so the original process list is not changed
+    # Make a copy so the original process list remains unchanged
     processes = processes.copy()
 
-    # sort by priority
-    # python keeps the original order if priority is same
+    # Sort processes according to priority
+    # Python maintains the original order when priorities are equal
     processes.sort(key=lambda p: p["priority"])
 
     current_time = 0
@@ -25,40 +21,38 @@ def priority_scheduling(processes):
     total_tat = 0
     total_wt = 0
 
-    # run each process in priority order
+    # Execute processes in priority order
     while processes:
 
-        # take the first process
+        # Take the highest-priority process
         process = processes.pop(0)
 
         pid = process["id"]
         priority = process["priority"]
         burst = process["burst"]
 
-        # process starts at current time
+        # Record when the process starts
         start_time = current_time
 
-        # calculate completion time
+        # Calculate completion time
         current_time = current_time + burst
         completion_time = current_time
 
-        # arrival time is 0
+        # Since arrival time is 0, turnaround time equals completion time
         turnaround_time = completion_time
 
-        # waiting time = turnaround time - burst time
+        # Calculate waiting and response times
         waiting_time = turnaround_time - burst
-
-        # response time = start time because arrival time is 0
         response_time = start_time
 
-        # add process to gantt chart
+        # Add the process to the Gantt chart timeline
         timeline.append({
             "process": pid,
             "start": start_time,
             "end": completion_time
         })
 
-        # save process result
+        # Store the completed process details
         results.append({
             "id": pid,
             "priority": priority,
@@ -69,19 +63,22 @@ def priority_scheduling(processes):
             "response": response_time
         })
 
-        # add values to totals
-        total_tat = total_tat + turnaround_time
-        total_wt = total_wt + waiting_time
+        # Keep track of total waiting and turnaround times
+        total_tat += turnaround_time
+        total_wt += waiting_time
 
-    # calculate average times
+    # Calculate average scheduling times
     number_of_processes = len(results)
 
     if number_of_processes > 0:
+
         average_tat = total_tat / number_of_processes
         average_wt = total_wt / number_of_processes
+
         average_response = sum(
             p["response"] for p in results
         ) / number_of_processes
+
     else:
         average_tat = 0
         average_wt = 0
@@ -96,96 +93,3 @@ def priority_scheduling(processes):
             "response": average_response
         }
     }
-
-
-if __name__ == "__main__":
-
-    processes = [
-        {
-            "id": "P",
-            "priority": 3,
-            "burst": 5
-        },
-        {
-            "id": "Q",
-            "priority": 2,
-            "burst": 4
-        },
-        {
-            "id": "R",
-            "priority": 1,
-            "burst": 2
-        },
-        {
-            "id": "S",
-            "priority": 2,
-            "burst": 4
-        },
-        {
-            "id": "T",
-            "priority": 1,
-            "burst": 3
-        }
-    ]
-
-    result = priority_scheduling(processes)
-
-    print("\nGANTT CHART")
-    print("-" * 40)
-
-    for block in result["timeline"]:
-        print(
-            f"{block['process']}: "
-            f"{block['start']} -> {block['end']}"
-        )
-
-    print("\nPROCESS RESULTS")
-    print("-" * 40)
-
-    for process in result["results"]:
-        print(
-            f"{process['id']} | "
-            f"Priority: {process['priority']} | "
-            f"BT: {process['burst']} | "
-            f"CT: {process['completion']} | "
-            f"TAT: {process['turnaround']} | "
-            f"WT: {process['waiting']}"
-        )
-
-    print("\nAVERAGES")
-    print("-" * 40)
-
-    print(
-        f"Average Waiting Time: "
-        f"{result['averages']['waiting']:.2f}"
-    )
-
-    print(
-        f"Average Turnaround Time: "
-        f"{result['averages']['turnaround']:.2f}"
-    )
-
-    print(
-        f"Average Response Time: "
-        f"{result['averages']['response']:.2f}"
-    )
-
-
-"""
-priority scheduling
-
-- this version is non-preemptive
-- smaller priority number means higher priority
-- processes are sorted by priority
-- if two processes have the same priority, original order is maintained
-- all processes have arrival time 0
-- once a process starts, it runs until it finishes
-- a newly arrived process cannot interrupt the running process
-
-time calculations:
-
-completion time = previous completion time + burst time
-turnaround time = completion time
-waiting time = turnaround time - burst time
-response time = start time
-"""

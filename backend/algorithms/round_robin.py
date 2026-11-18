@@ -1,21 +1,17 @@
 def round_robin(processes, time_quantum):
     """
-    round robin cpu scheduling
+    Round Robin CPU Scheduling
 
-    each process has:
-    - id
-    - arrival
-    - burst
-    - priority
+    Each process gets the CPU for a fixed amount of time
+    called the time quantum.
 
-    time quantum decides how long a process can run
-    before going back to the ready queue
+    If a process is not completed, it goes back to the ready queue.
     """
 
-    # make a copy so the original process list is not changed
+    # Make a copy so the original process list remains unchanged
     processes = processes.copy()
 
-    # add remaining burst time to each process
+    # Track the remaining burst time of each process
     for process in processes:
         process["remaining"] = process["burst"]
 
@@ -23,20 +19,21 @@ def round_robin(processes, time_quantum):
     timeline = []
     results = []
 
-    # store the first time each process gets the cpu
+    # Store the first time each process gets the CPU
     first_start = {}
 
-    # ready queue
+    # Ready queue stores processes waiting for CPU time
     ready_queue = []
 
-    # keep track of processes that have been added to the queue
+    # Keep track of processes already added to the queue
     added = set()
 
-    # keep running until all processes are completed
+    # Continue until all processes are completed
     while len(results) < len(processes):
 
-        # add newly arrived processes to the ready queue
+        # Add newly arrived processes to the ready queue
         for process in processes:
+
             if (
                 process["arrival"] <= current_time
                 and process["id"] not in added
@@ -45,7 +42,7 @@ def round_robin(processes, time_quantum):
                 ready_queue.append(process)
                 added.add(process["id"])
 
-        # if the queue is empty, move cpu time to next arrival
+        # If the queue is empty, move to the next process arrival
         if not ready_queue:
 
             remaining_processes = [
@@ -67,16 +64,16 @@ def round_robin(processes, time_quantum):
             current_time = next_arrival
             continue
 
-        # take the first process from the ready queue
+        # Take the first process from the ready queue
         process = ready_queue.pop(0)
 
         pid = process["id"]
 
-        # record the first time the process gets the cpu
+        # Record the first time the process gets the CPU
         if pid not in first_start:
             first_start[pid] = current_time
 
-        # process can run for time quantum or until it finishes
+        # Run the process for one quantum or until it finishes
         run_time = min(
             time_quantum,
             process["remaining"]
@@ -86,13 +83,14 @@ def round_robin(processes, time_quantum):
         current_time += run_time
         process["remaining"] -= run_time
 
-        # save this part for the gantt chart
+        # Add this execution to the Gantt chart timeline
         if (
             timeline
             and timeline[-1]["process"] == pid
             and timeline[-1]["end"] == start_time
         ):
             timeline[-1]["end"] = current_time
+
         else:
             timeline.append({
                 "process": pid,
@@ -100,8 +98,9 @@ def round_robin(processes, time_quantum):
                 "end": current_time
             })
 
-        # add any new processes that arrived while this process was running
+        # Add processes that arrived while the current process was running
         for new_process in processes:
+
             if (
                 new_process["arrival"] <= current_time
                 and new_process["id"] not in added
@@ -110,12 +109,13 @@ def round_robin(processes, time_quantum):
                 ready_queue.append(new_process)
                 added.add(new_process["id"])
 
-        # if process is not finished, put it back in the queue
+        # If the process still needs CPU time, add it back to the queue
         if process["remaining"] > 0:
+
             ready_queue.append(process)
 
         else:
-            # calculate the scheduling times
+            # Calculate scheduling times for the completed process
             completion_time = current_time
 
             turnaround_time = (
@@ -133,7 +133,7 @@ def round_robin(processes, time_quantum):
                 - process["arrival"]
             )
 
-            # save all results for this process
+            # Store the completed process details
             results.append({
                 "id": pid,
                 "arrival": process["arrival"],
@@ -146,10 +146,11 @@ def round_robin(processes, time_quantum):
                 "response": response_time
             })
 
-    # calculate average times
+    # Calculate average scheduling times
     number_of_processes = len(results)
 
     if number_of_processes > 0:
+
         average_waiting = sum(
             p["waiting"] for p in results
         ) / number_of_processes
@@ -161,6 +162,7 @@ def round_robin(processes, time_quantum):
         average_response = sum(
             p["response"] for p in results
         ) / number_of_processes
+
     else:
         average_waiting = 0
         average_turnaround = 0
@@ -175,95 +177,3 @@ def round_robin(processes, time_quantum):
             "response": average_response
         }
     }
-
-
-if __name__ == "__main__":
-
-    processes = [
-        {
-            "id": "P1",
-            "arrival": 0,
-            "burst": 5,
-            "priority": 4
-        },
-        {
-            "id": "P2",
-            "arrival": 1,
-            "burst": 4,
-            "priority": 3
-        },
-        {
-            "id": "P3",
-            "arrival": 2,
-            "burst": 2,
-            "priority": 1
-        },
-        {
-            "id": "P4",
-            "arrival": 4,
-            "burst": 1,
-            "priority": 2
-        }
-    ]
-
-    time_quantum = 2
-
-    result = round_robin(processes, time_quantum)
-
-    print("\nGANTT CHART")
-    print("-" * 40)
-
-    for block in result["timeline"]:
-        print(
-            f"{block['process']}: "
-            f"{block['start']} -> {block['end']}"
-        )
-
-    print("\nPROCESS RESULTS")
-    print("-" * 40)
-
-    for process in result["results"]:
-        print(
-            f"{process['id']} | "
-            f"Waiting: {process['waiting']} | "
-            f"Turnaround: {process['turnaround']} | "
-            f"Response: {process['response']}"
-        )
-
-    print("\nAVERAGES")
-    print("-" * 40)
-
-    print(
-        f"Average Waiting Time: "
-        f"{result['averages']['waiting']:.2f}"
-    )
-
-    print(
-        f"Average Turnaround Time: "
-        f"{result['averages']['turnaround']:.2f}"
-    )
-
-    print(
-        f"Average Response Time: "
-        f"{result['averages']['response']:.2f}"
-    )
-
-
-"""
-round robin (rr)
-
-- each process gets the cpu for a fixed time
-- this fixed time is called time quantum
-- processes are handled using a ready queue
-- if a process is not finished after its quantum, it goes back to the queue
-- it is a preemptive scheduling algorithm
-- processes are generally handled in circular order
-- arrival time is considered when adding processes to the queue
-- priority does not decide the order
-
-time calculations:
-
-waiting time = turnaround time - burst time
-turnaround time = completion time - arrival time
-response time = first start time - arrival time
-"""
